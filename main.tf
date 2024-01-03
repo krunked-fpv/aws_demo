@@ -8,16 +8,26 @@ resource "aws_instance" "ec2_instance_1" {
   key_name      = "agoresch"
   subnet_id     = "subnet-031018a2a183467bc"
 
+  #This section would be where apache, php, and mysql client is installed on the ec2 instance
+  # However, when this user_data section is used the target_group nodes report unhealthy
+  #user_data = <<-EOF
+             #!/bin/bash
+             # sudo apt-get update
+             # sudo apt-get install -y apache2 php libapache2-mod-php mysql-client
+
+             # Restart Apache to apply changes
+             # sudo service apache2 restart
+
+             # Create index.html file
+             #echo "<html><body>Alex Goresch was here</body></html>" | sudo tee /var/www/html/index.html
+           #EOF
+
   user_data = <<-EOF
               #!/bin/bash
               sudo apt-get update
-              sudo apt-get install -y apache2 php libapache2-mod-php mysql-client
-
-              # Restart Apache to apply changes
-              sudo service apache2 restart
-
-             # Create index.html file
-             echo "<html><body>Alex Goresch was here</body></html>" | sudo tee /var/www/html/index.html
+              sudo apt-get install -y python3
+              echo "<html><body>Alex Goresch was here</body></html>" > index.html
+              nohup python3 -m http.server 80 &
             EOF
 
   tags = {
@@ -31,17 +41,27 @@ resource "aws_instance" "ec2_instance_2" {
   key_name      = "agoresch"
   subnet_id     = "subnet-031018a2a183467bc"
 
- user_data = <<-EOF
-            #!/bin/bash
-            sudo apt-get update
-            sudo apt-get install -y apache2 php libapache2-mod-php mysql-client
+  #This section would be where apache, php, and mysql client is installed on the ec2 instance
+  # However, when this user_data section is used the target_group nodes report unhealthy
+  #user_data = <<-EOF
+           #!/bin/bash
+           #sudo apt-get update
+           #sudo apt-get install -y apache2 php libapache2-mod-php mysql-client
 
-            # Restart Apache to apply changes
-            sudo service apache2 restart
+           # Restart Apache to apply changes
+           #sudo service apache2 restart
 
-            # Create index.html file
-            echo "<html><body>Alex Goresch was here</body></html>" | sudo tee /var/www/html/index.html
-           EOF
+           # Create index.html file
+           #echo "<html><body>Alex Goresch was here</body></html>" | sudo tee /var/www/html/index.html
+          #EOF
+
+  user_data = <<-EOF
+              #!/bin/bash
+              sudo apt-get update
+              sudo apt-get install -y python3
+              echo "<html><body>Alex Goresch was here</body></html>" > index.html
+              nohup python3 -m http.server 80 &
+            EOF
 
   tags = {
     Name = "EC2_Instance_2"
